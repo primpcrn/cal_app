@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Cal App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a class="brand-logo center">Calculate App</a>
+    </div>
+  </nav>
+  <ul></ul>
+  <div class="container" style="text-align:center; margin-top: 40px">
+    <form>
+      <div>
+        <label style="margin-right: 20px">Enter A : </label>
+        <input required type="number" style="width: 300px;" id="a" autofocus>
+        <br>
+        <label style="margin-right: 20px">Enter B : </label>
+        <input required type="number" style="width: 300px;" id="b" autofocus>
+      </div>
+      <div style="border: 2px solid #ACB6F3; border-radius: 10px; width: 55%; margin-left: 160px">
+        <input type="radio" id="add" name="contact" value=+>
+        <label for="add" style="margin-right: 20px"> + </label>
+
+        <input type="radio" id="min" name="contact" value=->
+        <label for="min" style="margin-right: 20px"> - </label>
+
+        <input type="radio" id="mul" name="contact" value=*>
+        <label for="mul" style="margin-right: 20px"> * </label>
+
+        <input type="radio" id="div" name="contact" value=/>
+        <label for="div" style="margin-right: 20px"> / </label>
+
+        <input type="radio" id="pow" name="contact" value='pow'>
+        <label for="pow" style="margin-right: 20px"> Pow </label>
+      </div>
+      <div>
+        <label>Result : </label>
+        <input type="text" disabled style="width: 350px; margin-left: 40px; margin-top: 40px" id="result" autofocus>
+      </div>
+      <button style="margin: 20px" class="waves-effect waves-light btn" onclick="calculateNum()" type="submit">Load</button>
+      <button style="margin: 20px" class="waves-effect waves-light btn" onclick="writeFile()" type="submit">Save</button>
+    </form>
+  </div>
+
+  <script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+    const ul = document.querySelector('ul');
+    ipcRenderer.on('item:add', function (e, item) {
+      document.querySelector('#result').value = a + b
+    });
+
+    ipcRenderer.on('item:clear', function () {
+      ul.className = '';
+      ul.innerHTML = '';
+    });
+    ul.addEventListener('dblclick', removeItem);
+    function removeItem(e) {
+      event.target.remove();
+      if (ul.children.length == 0) {
+        ul.className = '';
+      }
+    }
+
+
+    function calculateNum() {
+      console.log("Check num")
+      // e.preventDefault();
+      const num_a = parseInt(document.querySelector('#a').value, 10)
+      const num_b = parseInt(document.querySelector('#b').value, 10)
+      var result;
+      if (document.querySelector('#add').checked === true) {
+        result = num_a + num_b
+        document.querySelector('#result').value = result
+      }
+      else if (document.querySelector('#min').checked === true) {
+        result = num_a - num_b
+        document.querySelector('#result').value = result
+      }
+      else if (document.querySelector('#mul').checked === true) {
+        result = num_a * num_b
+        document.querySelector('#result').value = result
+      }
+      else if (document.querySelector('#div').checked === true) {
+        if (num_b === 0) {
+          // alert("You can't division by 0 ")
+          result = "Cannot find the answer"
+        }
+        else {
+          result = num_a / num_b
+        }
+
+        document.querySelector('#result').value = result
+      }
+      else if (document.querySelector('#pow').checked === true) {
+        result = Math.pow(num_a, num_b)
+        document.querySelector('#result').value = result;
+      }
+      return result;
+    }
+
+    function writeFile() {
+      const a = document.querySelector('#a').value;
+      const b = document.querySelector('#b').value;
+      // const radios = document.getElementsByName('contact');
+      const radios = ['#add', '#min', '#mul', '#div', '#pow']
+      var value;
+      for (var i in radios) {
+        if (document.querySelector(radios[i]).checked === true) {
+          value = document.querySelector(radios[i]).value;
+        }
+      }
+      const result_value = document.querySelector('#result').value;
+      const localstorage = JSON.stringify({ value_a: a, value_b: b, operator_value: value, result_value: calculateNum() })
+      console.log(value)
+      if (a  != "" && b != "" && value != null) {
+        console.log("validate")
+        const fs = require('fs');
+        fs.writeFile("cal_app.json", localstorage, function (err) {
+          if (err) {
+            return console.log(err);
+          }
+          console.log("--Saved!--");
+        });
+      }
+      else {
+        alert("Please fill all field")
+      }
+
+    }
+
+    // function validate() {
+    //   const num_b = parseInt(document.querySelector('#b').value, 10)
+    //   if (document.querySelector('#div').checked === true) {
+    //     if (num_b === 0) {
+    //       alert("You can't division by 0 ")
+    //     }
+    //   }
+    // }
+
+  </script>
+</body>

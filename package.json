@@ -1,0 +1,14 @@
+{
+  "name": "demo_cal",
+  "version": "1.0.0",
+  "description": "demo cal app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Patcharanan J.",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^3.0.5"
+  }
+}
