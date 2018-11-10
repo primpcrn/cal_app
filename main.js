@@ -112,12 +112,3 @@ if(process.env.NODE_ENV !== 'production'){
     ]
   });
 }
-
-// var fs = require('fs');
-// fs.writeFile("cal_app.json", "Hey there!", function(err) {
-//     if(err) {
-//         return console.log(err);
-//     }
-
-//     console.log("The file was saved!");
-// });

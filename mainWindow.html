@@ -23,26 +23,32 @@
         <input required type="number" style="width: 300px;" id="b" autofocus>
       </div>
       <div style="border: 2px solid #ACB6F3; border-radius: 10px; width: 55%; margin-left: 160px">
-        <input type="radio" id="add" name="contact" value=+>
+        <input onclick="calculateNum()" type="radio" id="add" name="contact" value=+>
         <label for="add" style="margin-right: 20px"> + </label>
 
-        <input type="radio" id="min" name="contact" value=->
+        <input onclick="calculateNum()" type="radio" id="min" name="contact" value=->
         <label for="min" style="margin-right: 20px"> - </label>
 
-        <input type="radio" id="mul" name="contact" value=*>
+        <input onclick="calculateNum()" type="radio" id="mul" name="contact" value=*>
         <label for="mul" style="margin-right: 20px"> * </label>
 
-        <input type="radio" id="div" name="contact" value=/>
+        <input onclick="calculateNum()" type="radio" id="div" name="contact" value= />
         <label for="div" style="margin-right: 20px"> / </label>
 
-        <input type="radio" id="pow" name="contact" value='pow'>
+        <input onclick="calculateNum()" type="radio" id="pow" name="contact" value='pow'>
         <label for="pow" style="margin-right: 20px"> Pow </label>
       </div>
       <div>
         <label>Result : </label>
         <input type="text" disabled style="width: 350px; margin-left: 40px; margin-top: 40px" id="result" autofocus>
       </div>
-      <button style="margin: 20px" class="waves-effect waves-light btn" onclick="calculateNum()" type="submit">Load</button>
+      <div>
+        <input type="checkbox" id="cloud"  onclick="cloudCheck()" name="cloud_check" value=''>
+        <label for="cloud" style="margin-right: 20px"> Cloud Drive </label>
+
+        <p id="text" style="display:none">Checkbox is CHECKED!</p>
+      </div>
+      <button style="margin: 20px" class="waves-effect waves-light btn" onclick="readeFile()" type="submit">Load</button>
       <button style="margin: 20px" class="waves-effect waves-light btn" onclick="writeFile()" type="submit">Save</button>
     </form>
   </div>
@@ -69,7 +75,7 @@
 
 
     function calculateNum() {
-      console.log("Check num")
+      // console.log("Check num")
       // e.preventDefault();
       const num_a = parseInt(document.querySelector('#a').value, 10)
       const num_b = parseInt(document.querySelector('#b').value, 10)
@@ -117,9 +123,9 @@
       }
       const result_value = document.querySelector('#result').value;
       const localstorage = JSON.stringify({ value_a: a, value_b: b, operator_value: value, result_value: calculateNum() })
-      console.log(value)
-      if (a  != "" && b != "" && value != null) {
-        console.log("validate")
+      // console.log(value)
+      if (a != "" && b != "" && value != null) {
+        // console.log("validate")
         const fs = require('fs');
         fs.writeFile("cal_app.json", localstorage, function (err) {
           if (err) {
@@ -133,15 +139,24 @@
       }
 
     }
+    
+    function readeFile(){
+      const fs = require('fs');
 
-    // function validate() {
-    //   const num_b = parseInt(document.querySelector('#b').value, 10)
-    //   if (document.querySelector('#div').checked === true) {
-    //     if (num_b === 0) {
-    //       alert("You can't division by 0 ")
-    //     }
-    //   }
-    // }
+      let rawdata = fs.readFileSync('cal_app.json');  
+      let student = JSON.parse(rawdata);  
+      console.log(student);  
+    }
+
+    function cloudCheck() {
+      var checkBox = document.getElementById("cloud");
+      var text = document.getElementById("text");
+      if (checkBox.checked == true){
+          text.style.display = "block";
+      } else {
+        text.style.display = "none";
+      }
+    }
 
   </script>
 </body>
