@@ -23,16 +23,16 @@
         <input required type="number" style="width: 300px;" id="b" autofocus>
       </div>
       <div style="border: 2px solid #ACB6F3; border-radius: 10px; width: 55%; margin-left: 160px">
-        <input onclick="calculateNum()" type="radio" id="add" name="contact" value=+>
+        <input onclick="calculateNum()" type="radio" id="add" name="contact" value='add'>
         <label for="add" style="margin-right: 20px"> + </label>
 
-        <input onclick="calculateNum()" type="radio" id="min" name="contact" value=->
+        <input onclick="calculateNum()" type="radio" id="min" name="contact" value='min'>
         <label for="min" style="margin-right: 20px"> - </label>
 
-        <input onclick="calculateNum()" type="radio" id="mul" name="contact" value=*>
+        <input onclick="calculateNum()" type="radio" id="mul" name="contact" value='mul'>
         <label for="mul" style="margin-right: 20px"> * </label>
 
-        <input onclick="calculateNum()" type="radio" id="div" name="contact" value= />
+        <input onclick="calculateNum()" type="radio" id="div" name="contact" value='div'>
         <label for="div" style="margin-right: 20px"> / </label>
 
         <input onclick="calculateNum()" type="radio" id="pow" name="contact" value='pow'>
@@ -46,7 +46,7 @@
         <input type="checkbox" id="cloud"  onclick="cloudCheck()" name="cloud_check" value=''>
         <label for="cloud" style="margin-right: 20px"> Cloud Drive </label>
 
-        <p id="text" style="display:none">Checkbox is CHECKED!</p>
+        <p id="text" style="display:none">SORRY, Unvaliable to use cloud.</p>
       </div>
       <button style="margin: 20px" class="waves-effect waves-light btn" onclick="readeFile()" type="submit">Load</button>
       <button style="margin: 20px" class="waves-effect waves-light btn" onclick="writeFile()" type="submit">Save</button>
@@ -144,8 +144,14 @@
       const fs = require('fs');
 
       let rawdata = fs.readFileSync('cal_app.json');  
-      let student = JSON.parse(rawdata);  
-      console.log(student);  
+      let cal_data = JSON.parse(rawdata);  
+      console.log(cal_data);  
+      document.querySelector('#a').value = cal_data["value_a"]
+      document.querySelector('#b').value = cal_data["value_b"]
+      // document.querySelector('#'.cal_data["operator_value"]).checked === true
+      console.log(cal_data["operator_value"])
+      document.querySelector('#result').value = cal_data["result_value"]
+
     }
 
     function cloudCheck() {

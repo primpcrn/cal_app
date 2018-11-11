@@ -52,40 +52,12 @@ function createAddWindow(){
   });
 }
 
-// Catch item:add
-ipcMain.on('item:add', function(e, item){
-  mainWindow.webContents.send('item:add', item);
-  addWindow.close(); 
-  // Still have a reference to addWindow in memory. Need to reclaim memory (Grabage collection)
-  //addWindow = null;
-});
 
 // Create menu template
 const mainMenuTemplate =  [
   // Each object is a dropdown
   {
     label: 'File',
-    submenu:[
-      {
-        label:'Add Item',
-        click(){
-          createAddWindow();
-        }
-      },
-      {
-        label:'Clear Items',
-        click(){
-          mainWindow.webContents.send('item:clear');
-        }
-      },
-      {
-        label: 'Quit',
-        accelerator:process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
-        click(){
-          app.quit();
-        }
-      }
-    ]
   }
 ];
 
