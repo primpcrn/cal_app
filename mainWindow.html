@@ -56,23 +56,6 @@
   <script>
     const electron = require('electron');
     const { ipcRenderer } = electron;
-    const ul = document.querySelector('ul');
-    ipcRenderer.on('item:add', function (e, item) {
-      document.querySelector('#result').value = a + b
-    });
-
-    ipcRenderer.on('item:clear', function () {
-      ul.className = '';
-      ul.innerHTML = '';
-    });
-    ul.addEventListener('dblclick', removeItem);
-    function removeItem(e) {
-      event.target.remove();
-      if (ul.children.length == 0) {
-        ul.className = '';
-      }
-    }
-
 
     function calculateNum() {
       // console.log("Check num")
